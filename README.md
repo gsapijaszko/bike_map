@@ -2,7 +2,7 @@
  
 Bike map based on OSM data
 
-Using this kind of map since a while (the earliest print out I have found are dated 2017), so I thought it can be useful to others. It's mainly based on [OpenStreetMap](https://www.openstreetmap.org/) data (you can download it from [Geofabrik](https://download.geofabrik.de/)), uses `postgres`, `postgis` and `QGIS`. The main purpose of the map is to be printed as atlas on A4 paper sheets (you can find QGIS Atlas features in project as well). The base scale is 1:50 000.
+Using this kind of map since a while (the earliest print out I have found are dated 2017), so I thought it can be useful to others. It's mainly based on [OpenStreetMap](https://www.openstreetmap.org/) data (you can download it from [Geofabrik](https://download.geofabrik.de/)), uses `postgres`, `postgis` and `QGIS`. The main purpose of the map is to be printed as atlas on A4 paper sheets (you can find QGIS Atlas features in project as well). The base scale is 1:50 000 and used projection EPSG:2180.
 
 How it looks like you can see on the screenshot below.
 
@@ -54,14 +54,27 @@ The background of the map consist of `landuse` taken from `planet_osm_polygon` t
 Over it we have few layers from GDOŚ with different types of nature reserve areas. If you would like to extract the data from OSM, please have a look on [`leisure=nature_reserve`](https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dnature_reserve) and [`protect_class`](https://wiki.openstreetmap.org/wiki/Key:protect_class) keys.
 
 
+### Highways, routes, cyclists infrastructure
+
+
+### Other points of interest
+
+
+## Atlas, how to generate
+
+Sample atlas with coverage of few kilometers of ER-6 route in [img folder](./img/er6_snap.pdf).
+
 ## To do
 
 -- exclude shops from the city areas? first check the assumption, if all city areas (admin_level = 8) has stores
+
+-- new, simplified contours, based on https://land.copernicus.eu/imagery-in-situ/eu-dem/eu-dem-v1.1
 
 -- simplify railways and multilane highways (https://gis.stackexchange.com/questions/319412/simplifying-multiple-lines-to-create-central-axis)
 
 -- transpose railway stations on railway
 
+-- Lasy Państwowe - allotments address numbers
 
 ## Footnotes
 
