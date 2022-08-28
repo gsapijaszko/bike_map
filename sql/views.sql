@@ -75,7 +75,6 @@ CREATE INDEX planet_bikemap_bicycle_rest_areas_way_idx
     (way)
     TABLESPACE pg_default;
 	
-	
 -- View: public.bikemap_bicycle_service_and_shop
 
 DROP MATERIALIZED VIEW IF EXISTS public.bikemap_bicycle_service_and_shop;
@@ -191,8 +190,7 @@ CREATE INDEX bikemap_ferries_way_idx
     ON public.bikemap_ferries USING gist
     (way)
     TABLESPACE pg_default;
-
-
+	
 -- View: public.bikemap_highways
 
 DROP MATERIALIZED VIEW IF EXISTS public.bikemap_highways;
@@ -235,8 +233,6 @@ CREATE INDEX bikemap_highways_highway_tracktype_idx
     (highway COLLATE pg_catalog."default", tracktype COLLATE pg_catalog."default")
     TABLESPACE pg_default;
 	
-
-
 -- View: public.bikemap_hotels
 
 DROP MATERIALIZED VIEW IF EXISTS public.bikemap_hotels;
@@ -318,7 +314,6 @@ CREATE INDEX bikemap_hotels_way_idx
     (way)
     TABLESPACE pg_default;
 	
-
 -- View: public.bikemap_landuse
 
 DROP MATERIALIZED VIEW IF EXISTS public.bikemap_landuse;
@@ -380,6 +375,7 @@ CREATE INDEX bikemap_landuse_way_idx
     (way)
     TABLESPACE pg_default;
 	
+
 -- View: public.bikemap_man_made
 
 DROP MATERIALIZED VIEW IF EXISTS public.bikemap_man_made;
@@ -426,7 +422,7 @@ CREATE INDEX bikemap_man_made_center_idx
     ON public.bikemap_man_made USING gist
     (center)
     TABLESPACE pg_default;
-
+	
 -- View: public.bikemap_places
 
 DROP MATERIALIZED VIEW IF EXISTS public.bikemap_places;
@@ -497,7 +493,7 @@ CREATE INDEX planet_osm_railway_stations_center_idx
     ON public.bikemap_railway_stations USING gist
     (center)
     TABLESPACE pg_default;
-
+	
 -- View: public.bikemap_railways
 
 DROP MATERIALIZED VIEW IF EXISTS public.bikemap_railways;
@@ -635,8 +631,7 @@ CREATE INDEX bikemap_routes_surface_way_idx
     ON public.bikemap_routes_surface USING gist
     (way)
     TABLESPACE pg_default;
-
-
+	
 -- View: public.bikemap_shelters
 
 DROP MATERIALIZED VIEW IF EXISTS public.bikemap_shelters;
@@ -696,7 +691,7 @@ CREATE INDEX bikemap_shelters_way_idx
     ON public.bikemap_shelters USING gist
     (way)
     TABLESPACE pg_default;
-
+	
 -- View: public.bikemap_shops
 
 DROP MATERIALIZED VIEW IF EXISTS public.bikemap_shops;
@@ -739,7 +734,6 @@ CREATE INDEX bikemap_shops_shop
     (shop COLLATE pg_catalog."default")
     TABLESPACE pg_default;
 	
-
 -- View: public.bikemap_water
 
 DROP MATERIALIZED VIEW IF EXISTS public.bikemap_water;
@@ -768,6 +762,7 @@ WITH DATA;
 
 ALTER TABLE IF EXISTS public.bikemap_water
     OWNER TO postgres;
+
 
 CREATE INDEX bikemap_water_landuse_idx
     ON public.bikemap_water USING btree
