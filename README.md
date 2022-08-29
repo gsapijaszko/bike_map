@@ -1,4 +1,4 @@
-# bike_map_50
+# Bike map
  
 Bike map based on OSM data
 
@@ -56,13 +56,41 @@ Over it we have few layers from GDOŚ with different types of nature reserve are
 
 ### Highways, routes, cyclists infrastructure
 
+tbc.
 
 ### Other points of interest
 
 
 ## Atlas, how to generate
 
-Sample atlas with coverage of few kilometers of ER-6 route in [img folder](./img/er6_snap.pdf).
+Sample atlas with coverage of few kilometers of ER-6 route in [img folder](./img/er6_snap.pdf). For atlas generation you can use `clasic_grid` layer, which consist of rectangular grid of dimmensions 9x12 km shown below.
+
+<div style="text-align:center"><img src="./img/grid.png"/></div>
+
+There are several ways to choose the appropriate areas, either by `Select Features by Area or Single Click` option, or by `Select by Location` from `Vector -> Research Tool` menu --- that's my favorite one. Let's assume, we have to generate an atlas along ER-6 cycle route. We can use `DB Manager` to create the geometry and load it as a new layer:
+
+<div style="text-align:center"><img src="./img/dbmanager.png"/></div>
+
+After loading it looks like (for simplicity all other layers were unselected):
+
+<div style="text-align:center"><img src="./img/er6_on_grid.png"/></div>
+
+Using `Select by Location` tool:
+
+<div style="text-align:center"><img src="./img/select_by_location.png"/></div>
+
+we can easily get the required selection
+
+<div style="text-align:center"><img src="./img/selection.png"/></div>
+
+and save it as a new layer.
+
+<div style="text-align:center"><img src="./img/save_selection.png"/></div>
+
+Having new layer added (`ER6` in our case) we can open A4_50000 layout (`Layouts` from `Project` menu) and choose layer name in `Coverage layer` field in `Atlas` tab. Then you can preview Atlas, or export it as PDF.
+
+
+<div style="text-align:center"><img src="./img/atlas.png"/></div>
 
 ## To do
 
