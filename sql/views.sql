@@ -453,7 +453,37 @@ CREATE INDEX bikemap_places_way_idx
     ON public.bikemap_places USING gist
     (way)
     TABLESPACE pg_default;
-	
+
+-- View: public.bikemap_railways
+
+DROP MATERIALIZED VIEW IF EXISTS public.bikemap_railways;
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS public.bikemap_railways
+TABLESPACE pg_default
+AS
+ SELECT row_number() OVER () AS myid,
+    railways.railway,
+    railways.way
+   FROM ( SELECT DISTINCT planet_osm_line.way,
+            planet_osm_line.railway
+           FROM planet_osm_line
+          WHERE (planet_osm_line.railway = ANY (ARRAY['rail'::text, 'yes'::text, 'narrow_gauge'::text, 'disused'::text])) AND planet_osm_line.service IS NULL) railways
+WITH DATA;
+
+ALTER TABLE IF EXISTS public.bikemap_railways
+    OWNER TO postgres;
+
+
+CREATE INDEX bikemap_railways_railway_idx
+    ON public.bikemap_railways USING btree
+    (railway COLLATE pg_catalog."default")
+    TABLESPACE pg_default;
+CREATE INDEX bikemap_railways_way_idx
+    ON public.bikemap_railways USING gist
+    (way)
+    TABLESPACE pg_default;
+
+
 -- View: public.bikemap_railway_stations
 
 DROP MATERIALIZED VIEW IF EXISTS public.bikemap_railway_stations;
@@ -493,36 +523,8 @@ CREATE INDEX planet_osm_railway_stations_center_idx
     ON public.bikemap_railway_stations USING gist
     (center)
     TABLESPACE pg_default;
-	
--- View: public.bikemap_railways
-
-DROP MATERIALIZED VIEW IF EXISTS public.bikemap_railways;
-
-CREATE MATERIALIZED VIEW IF NOT EXISTS public.bikemap_railways
-TABLESPACE pg_default
-AS
- SELECT row_number() OVER () AS myid,
-    railways.railway,
-    railways.way
-   FROM ( SELECT DISTINCT planet_osm_line.way,
-            planet_osm_line.railway
-           FROM planet_osm_line
-          WHERE (planet_osm_line.railway = ANY (ARRAY['rail'::text, 'yes'::text, 'narrow_gauge'::text, 'disused'::text])) AND planet_osm_line.service IS NULL) railways
-WITH DATA;
-
-ALTER TABLE IF EXISTS public.bikemap_railways
-    OWNER TO postgres;
 
 
-CREATE INDEX bikemap_railways_railway_idx
-    ON public.bikemap_railways USING btree
-    (railway COLLATE pg_catalog."default")
-    TABLESPACE pg_default;
-CREATE INDEX bikemap_railways_way_idx
-    ON public.bikemap_railways USING gist
-    (way)
-    TABLESPACE pg_default;
-	
 -- View: public.bikemap_resind
 
 DROP MATERIALIZED VIEW IF EXISTS public.bikemap_resind;
