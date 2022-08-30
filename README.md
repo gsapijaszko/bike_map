@@ -31,7 +31,7 @@ I'm using extra online data sources for Poland:
 
 ## Data use, styling and reasons behind it
 
-If my memory serves me well, it all began with Anita's Graser post about building Google-like maps using OSM data [^2]. Since then, it has undergone numerous versions, stylistic modifications, and icon, color, and detail tinkering.
+If my memory serves me well, it all began with Anita's Graser post about building Google-like maps using OSM data[^2]. Since then, it has undergone numerous versions, stylistic modifications, and icon, color, and detail tinkering.
 
 The main reason behind the map is to have it printed out on hand, during bike trips. Therefore, such design suppositions: 
 
