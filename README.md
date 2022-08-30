@@ -2,38 +2,38 @@
  
 Bike map based on OSM data
 
-Using this kind of map since a while (the earliest print out I have found are dated 2017), so I thought it can be useful to others. It's mainly based on [OpenStreetMap](https://www.openstreetmap.org/) data (you can download it from [Geofabrik](https://download.geofabrik.de/)), uses `postgres`, `postgis` and `QGIS`. The main purpose of the map is to be printed as atlas on A4 paper sheets (you can find QGIS Atlas features in project as well). The base scale is 1:50 000 and used projection EPSG:2180.
+I've been using this type of map for a while (the earliest printout I could find is from 2017), therefore I though it could be helpful to others. It employs "postgres," "postgis," and "QGIS" and is mostly based on [OpenStreetMap](https://www.openstreetmap.org/) data, which you may acquire from [Geofabrik](https://download.geofabrik.de/). The map's primary use is to be printed as an atlas on sheets of A4 paper (you can find QGIS Atlas features in project as well). The projection EPSG:2180 was utilized, and the base scale was 1:50 000. 
 
-How it looks like you can see on the screenshot below.
+On the screenshot below, you can see how it appears.
 
 <div style="text-align:center"><img src="./img/screenshot.png"/></div>
 
 
 ## Data preparation
 
-To use the OSM data we will use `osm2pgsql`[^1] with a slighty adopted style (added in osm2pgsql folder):
+We will use `osm2pgsql`[^1] to import the OSM data, with a little modified style (added in osm2pgsql folder) as follows:
 
     osm2pgsql -c -U postgres -W -d osmdb --slim --hstore-all --style default.style --multi-geometry --merc poland-latest.osm.pbf
 
-Then we have to run qsl script to create neccessary function(s) and views (stored in `sql/views.sql')
+To build the necessary function(s) and views (stored in `sql/views.sql'), we must execute the `sql` script:
 
     psql -U postgres -W -d osmdb -f views.sql
 
 
-For Poland, where I live, I'm using additional data sources:
+I'm using extra online data sources for Poland:
 
-* raster relief data from [geoportal.gov.pl](https://www.geoportal.gov.pl/uslugi/usluga-przegladania-wms) as background;
+* Background using raster relief information from [geoportal.gov.pl](https://www.geoportal.gov.pl/uslugi/usluga-przegladania-wms) as background;
 
-* vector boundary data for nature reserves, parks etc from [GDOŚ](https://sdi.gdos.gov.pl/wfs?request=GetCapabilities&service=WFS);
+* Vector boundary data from [GDOŚ](https://sdi.gdos.gov.pl/wfs?request=GetCapabilities&service=WFS) for nature reserves, parks etc;
 
-* WMS raster with forest areas where you can stay overnight in the wilderness [Lasy Państwowe](https://www.bdl.lasy.gov.pl/portal/);
+* A WMS raster showing woodland regions where [Lasy Państwowe](https://www.bdl.lasy.gov.pl/portal/) allows visitors to camp overnight; 
 
 
 ## Data use, styling and reasons behind it
 
-If I recall it correctly, it somewhat started with Anita's Graser post about creation of Google like maps with OSM data [^2]. Since then it went through a lot of iterations, styles changes, playing with icons, colors and details.
+If my memory serves me well, it all began with Anita's Graser post about building Google-like maps using OSM data [^2]. Since then, it has undergone numerous versions, stylistic modifications, and icon, color, and detail tinkering.
 
-The main reason behind the map is to have it printed out on hand, during bike trips. Hence such design assumptions: 
+The main reason behind the map is to have it printed out on hand, during bike trips. Therefore, such design suppositions: 
 
 * must have:
     * cycle and foot routes
@@ -49,9 +49,9 @@ The main reason behind the map is to have it printed out on hand, during bike tr
 
 ### Landuse, nature reserve - polygons
 
-The background of the map consist of `landuse` taken from `planet_osm_polygon` table. You can find details in `bikemap_landuse`, `bikemap_water` and `bikemap_resind` views. Styling is not sofisticated, however for shrubs (and probably wetlands) I'm using some symbols prepared by Yury Ryabov and Pavel Sergeev [^3]. 
+The `planet_osm_polygon` table `landuse` field serves as te map's background. Details can be found in the views `bikemap_landuse`, `bikemap_water` and `bikemap_resind`. Although the styling is not sophisticated, I am using some symbols created by Yury Ryabov and Pavel Sergeev [^3] for bushes (and perhaps wetlands). 
 
-Over it we have few layers from GDOŚ with different types of nature reserve areas. If you would like to extract the data from OSM, please have a look on [`leisure=nature_reserve`](https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dnature_reserve) and [`protect_class`](https://wiki.openstreetmap.org/wiki/Key:protect_class) keys.
+Over it we have few layers from GDOŚ with different types of nature reserve areas. If you would like to extract this type of data directly from OSM, please take a look on [`leisure=nature_reserve`](https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dnature_reserve) and [`protect_class`](https://wiki.openstreetmap.org/wiki/Key:protect_class) keys.
 
 
 ### Highways, routes, cyclists infrastructure
@@ -60,6 +60,7 @@ tbc.
 
 ### Other points of interest
 
+tbc.
 
 ## Atlas, how to generate
 
