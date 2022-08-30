@@ -21,6 +21,6 @@ psql -U postgres -W -d osmdb -f ./sql/dlp_forests.sql
 for file in ./lasy/*.gml; 
   do 
     echo $file;
-    ogr2ogr -append -f "PostgreSQL" PG:"host=localhost port=5432 dbname=osmdb user=postgres password=" -nln public.dlp_forests $file; 
+    ogr2ogr -append -f "PostgreSQL" PG:"host=localhost port=5432 dbname=osmdb user=postgres" -nln public.dlp_forests $file; 
 done;
-psql -U postgres -W -d osmdb -f ./sql/views_forests.sql
+psql -U postgres -W -d osmdb -f ./sql/views_forest.sql

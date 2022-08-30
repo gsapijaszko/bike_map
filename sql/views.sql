@@ -1,6 +1,6 @@
 -- FUNCTION: public.bikemap_findangle(geometry)
 
--- DROP FUNCTION IF EXISTS public.bikemap_findangle(geometry);
+DROP FUNCTION IF EXISTS public.bikemap_findangle(geometry);
 
 CREATE OR REPLACE FUNCTION public.bikemap_findangle(
 	point geometry)
@@ -735,7 +735,90 @@ CREATE INDEX bikemap_shops_shop
     ON public.bikemap_shops USING btree
     (shop COLLATE pg_catalog."default")
     TABLESPACE pg_default;
-	
+
+-- View: public.bikemap_tourism
+
+DROP MATERIALIZED VIEW IF EXISTS public.bikemap_tourism;
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS public.bikemap_tourism
+TABLESPACE pg_default
+AS
+ SELECT row_number() OVER () AS id,
+    tourism.tourism,
+    tourism.name,
+    tourism.center
+   FROM ( SELECT st_centroid(planet_osm_polygon.way) AS center,
+                CASE
+                    WHEN planet_osm_polygon.tourism = 'viewpoint'::text THEN 'viewpoint'::text
+                    WHEN planet_osm_polygon.tourism = ANY (ARRAY['museum'::text, 'gallery'::text]) THEN 'museum'::text
+                    WHEN planet_osm_polygon.tourism = 'attraction'::text AND planet_osm_polygon.historic IS NULL THEN 'attraction'::text
+                    WHEN planet_osm_polygon.historic = 'ruins'::text THEN 'ruins'::text
+                    WHEN planet_osm_polygon.historic = 'archaeological_site'::text THEN 'archaeological_site'::text
+                    WHEN planet_osm_polygon.historic = 'battlefield'::text THEN 'battlefield'::text
+                    WHEN planet_osm_polygon.historic = 'wayside_cross'::text THEN 'wayside_cross'::text
+                    WHEN planet_osm_polygon.historic = ANY (ARRAY['castle'::text, 'fortification'::text, 'fort'::text]) THEN 'castle'::text
+                    WHEN (planet_osm_polygon.historic = ANY (ARRAY['manor'::text, 'palace'::text, 'heritage'::text])) OR (planet_osm_polygon.tags -> 'manor'::text) <> ''::text THEN 'manor'::text
+                    WHEN (planet_osm_polygon.historic = ANY (ARRAY['memorial'::text, 'monument'::text])) OR (planet_osm_polygon.tags -> 'monument'::text) = 'yes'::text THEN 'monument'::text
+                    WHEN planet_osm_polygon.historic = 'church'::text THEN 'church'::text
+                    ELSE NULL::text
+                END AS tourism,
+            planet_osm_polygon.name
+           FROM planet_osm_polygon
+          WHERE planet_osm_polygon.tourism <> ''::text OR planet_osm_polygon.historic <> ''::text
+        UNION
+         SELECT st_centroid(planet_osm_line.way) AS center,
+                CASE
+                    WHEN planet_osm_line.tourism = 'viewpoint'::text THEN 'viewpoint'::text
+                    WHEN planet_osm_line.tourism = ANY (ARRAY['museum'::text, 'gallery'::text]) THEN 'museum'::text
+                    WHEN planet_osm_line.tourism = 'attraction'::text AND planet_osm_line.historic IS NULL THEN 'attraction'::text
+                    WHEN planet_osm_line.historic = 'ruins'::text THEN 'ruins'::text
+                    WHEN planet_osm_line.historic = 'archaeological_site'::text THEN 'archaeological_site'::text
+                    WHEN planet_osm_line.historic = 'battlefield'::text THEN 'battlefield'::text
+                    WHEN planet_osm_line.historic = 'wayside_cross'::text THEN 'wayside_cross'::text
+                    WHEN planet_osm_line.historic = ANY (ARRAY['castle'::text, 'fortification'::text, 'fort'::text]) THEN 'castle'::text
+                    WHEN (planet_osm_line.historic = ANY (ARRAY['manor'::text, 'palace'::text, 'heritage'::text])) OR (planet_osm_line.tags -> 'manor'::text) <> ''::text THEN 'manor'::text
+                    WHEN (planet_osm_line.historic = ANY (ARRAY['memorial'::text, 'monument'::text])) OR (planet_osm_line.tags -> 'monument'::text) = 'yes'::text THEN 'monument'::text
+                    WHEN planet_osm_line.historic = 'church'::text THEN 'church'::text
+                    ELSE NULL::text
+                END AS tourism,
+            planet_osm_line.name
+           FROM planet_osm_line
+          WHERE planet_osm_line.tourism <> ''::text OR planet_osm_line.historic <> ''::text
+        UNION
+         SELECT planet_osm_point.way AS center,
+                CASE
+                    WHEN planet_osm_point.tourism = 'viewpoint'::text THEN 'viewpoint'::text
+                    WHEN planet_osm_point.tourism = ANY (ARRAY['museum'::text, 'gallery'::text]) THEN 'museum'::text
+                    WHEN planet_osm_point.tourism = 'attraction'::text AND planet_osm_point.historic IS NULL THEN 'attraction'::text
+                    WHEN planet_osm_point.historic = 'ruins'::text THEN 'ruins'::text
+                    WHEN planet_osm_point.historic = 'archaeological_site'::text THEN 'archaeological_site'::text
+                    WHEN planet_osm_point.historic = 'battlefield'::text THEN 'battlefield'::text
+                    WHEN planet_osm_point.historic = 'wayside_cross'::text THEN 'wayside_cross'::text
+                    WHEN planet_osm_point.historic = ANY (ARRAY['castle'::text, 'fortification'::text, 'fort'::text]) THEN 'castle'::text
+                    WHEN (planet_osm_point.historic = ANY (ARRAY['manor'::text, 'palace'::text, 'heritage'::text])) OR (planet_osm_point.tags -> 'manor'::text) <> ''::text THEN 'manor'::text
+                    WHEN (planet_osm_point.historic = ANY (ARRAY['memorial'::text, 'monument'::text])) OR (planet_osm_point.tags -> 'monument'::text) = 'yes'::text THEN 'monument'::text
+                    WHEN planet_osm_point.historic = 'church'::text THEN 'church'::text
+                    ELSE NULL::text
+                END AS tourism,
+            planet_osm_point.name
+           FROM planet_osm_point
+          WHERE planet_osm_point.tourism <> ''::text OR planet_osm_point.historic <> ''::text) tourism
+WITH DATA;
+
+ALTER TABLE IF EXISTS public.bikemap_tourism
+    OWNER TO postgres;
+
+
+CREATE INDEX bikemap_tourism_center_idx
+    ON public.bikemap_tourism USING gist
+    (center)
+    TABLESPACE pg_default;
+CREATE INDEX bikemap_tourism_tourism_idx
+    ON public.bikemap_tourism USING btree
+    (tourism COLLATE pg_catalog."default")
+    TABLESPACE pg_default;
+
+
 -- View: public.bikemap_water
 
 DROP MATERIALIZED VIEW IF EXISTS public.bikemap_water;

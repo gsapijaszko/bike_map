@@ -6,7 +6,7 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS public.dlp_forests_addresses
 TABLESPACE pg_default
 AS
  SELECT "substring"(dlp_forests.adr_for::text, 1, strpos(dlp_forests.adr_for::text, ' '::text)) AS adres_lesny,
-    st_union(st_buffer(dlp_forests.geom, 1::double precision, 'endcap=round join=round'::text)) AS geom
+    st_setsrid(st_union(st_buffer(dlp_forests.geom, 1::double precision, 'endcap=round join=round'::text)),2180) AS geom
    FROM dlp_forests
   GROUP BY ("substring"(dlp_forests.adr_for::text, 1, strpos(dlp_forests.adr_for::text, ' '::text)))
 WITH DATA;
@@ -31,7 +31,7 @@ DROP MATERIALIZED VIEW IF EXISTS public.dlp_forests_swamp;
 CREATE MATERIALIZED VIEW IF NOT EXISTS public.dlp_forests_swamp
 TABLESPACE pg_default
 AS
- SELECT * 
+ SELECT ogc_fid, adr_for, st_setsrid(geom,2180) AS geom
    FROM dlp_forests
   WHERE dlp_forests.area_type::text = 'BAGNO'::text
 WITH DATA;

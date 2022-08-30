@@ -49,7 +49,9 @@ The main reason behind the map is to have it printed out on hand, during bike tr
 
 ### Landuse, nature reserve - polygons
 
-The `planet_osm_polygon` table `landuse` field serves as te map's background. Details can be found in the views `bikemap_landuse`, `bikemap_water` and `bikemap_resind`. Although the styling is not sophisticated, I am using some symbols created by Yury Ryabov and Pavel Sergeev [^3] for bushes (and perhaps wetlands). 
+The `planet_osm_polygon` table `landuse` field serves as te map's background. Details can be found in the views `bikemap_landuse`, `bikemap_water` and `bikemap_resind`. Although the styling is not sophisticated, I am using some symbols created by Yury Ryabov and Pavel Sergeev [^3] for bushes (and perhaps swamp areas).
+
+There are addresses of forests allotments shown as well. You can download data from Lasy Państwowe geoportal, import it to database and create views. Please have a look on `forests.sh` script and views: `dlp_forests.sql`, `views_forest.sql`.
 
 Over it we have few layers from GDOŚ with different types of nature reserve areas. If you would like to extract this type of data directly from OSM, please take a look on [`leisure=nature_reserve`](https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dnature_reserve) and [`protect_class`](https://wiki.openstreetmap.org/wiki/Key:protect_class) keys.
 
@@ -102,8 +104,6 @@ Having new layer added (`ER6` in our case) we can open A4_50000 layout (`Layouts
 -- simplify railways and multilane highways (https://gis.stackexchange.com/questions/319412/simplifying-multiple-lines-to-create-central-axis)
 
 -- transpose railway stations on railway
-
--- Lasy Państwowe - allotments address numbers
 
 ## Footnotes
 

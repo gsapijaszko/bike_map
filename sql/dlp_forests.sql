@@ -41,6 +41,12 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.dlp_forests
     OWNER to postgres;
+
+ALTER TABLE IF EXISTS public.dlp_forests
+  ALTER COLUMN geom
+  TYPE Geometry(MultiPolygon, 2180)
+  USING ST_SetSRID(geom, 2180);
+
 -- Index: dlp_forests_geom_geom_idx
 
 DROP INDEX IF EXISTS public."dlp_forests_geom_geom_idx";
