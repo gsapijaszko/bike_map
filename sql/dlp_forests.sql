@@ -12,7 +12,7 @@ CREATE SEQUENCE IF NOT EXISTS public."dlp_forests_ogc_fid_seq"
 ALTER SEQUENCE public."dlp_forests_ogc_fid_seq"
     OWNER TO postgres;
 
-DROP TABLE IF EXISTS public.dlp_forests;
+DROP TABLE IF EXISTS public.dlp_forests CASCADE;
 
 CREATE TABLE IF NOT EXISTS public.dlp_forests
 (
@@ -41,11 +41,6 @@ TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.dlp_forests
     OWNER to postgres;
-
-ALTER TABLE IF EXISTS public.dlp_forests
-  ALTER COLUMN geom
-  TYPE Geometry(MultiPolygon, 2180)
-  USING ST_SetSRID(geom, 2180);
 
 -- Index: dlp_forests_geom_geom_idx
 

@@ -1,6 +1,6 @@
 -- FUNCTION: public.bikemap_findangle(geometry)
 
-DROP FUNCTION IF EXISTS public.bikemap_findangle(geometry);
+DROP FUNCTION IF EXISTS public.bikemap_findangle(geometry) CASCADE;
 
 CREATE OR REPLACE FUNCTION public.bikemap_findangle(
 	point geometry)
