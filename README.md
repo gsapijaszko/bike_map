@@ -15,7 +15,7 @@ We will use `osm2pgsql`[^1] to import the OSM data, with a little modified style
 
     osm2pgsql -c -U postgres -W -d osmdb --slim --hstore-all --style default.style --multi-geometry --merc poland-latest.osm.pbf
 
-To build the necessary function(s) and views (stored in `sql/views.sql'), we must execute the `sql` script:
+To build the necessary function(s) and views (stored in `sql/views.sql`), we must execute the `sql` script:
 
     psql -U postgres -W -d osmdb -f views.sql
 
@@ -31,7 +31,7 @@ I'm using extra online data sources for Poland:
 
 ## Data use, styling and reasons behind it
 
-If my memory serves me well, it all began with Anita's Graser post about building Google-like maps using OSM data[^2]. Since then, it has undergone numerous versions, stylistic modifications, and icon, color, and detail tinkering.
+If my memory serves me well, it all began with Anita's Graser post about building Google-like maps using OSM data[^2]. Since then, it has undergone numerous versions, stylistic modifications, icons, colors and details tinkering.
 
 The main reason behind the map is to have it printed out on hand, during bike trips. Therefore, such design suppositions: 
 
